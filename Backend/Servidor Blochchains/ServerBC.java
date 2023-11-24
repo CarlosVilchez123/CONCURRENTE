@@ -10,7 +10,7 @@ public class ServerBC {
                 new Runnable() {
                     @Override
                     public void run() {
-                        mTcpClient = new TcpServerBC("192.168.100.25",
+                        mTcpClient = new TcpServerBC("192.168.18.175",
                                 new TcpServerBC.OnMessageReceived() {
                                     @Override
                                     public void messageReceived(String message) {
