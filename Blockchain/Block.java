@@ -6,31 +6,45 @@ import java.security.NoSuchAlgorithmException;
 
 public class Block {
     //private MessageDigest sha256;
+    static int jump = 2;
+    private int nClient;
+    private String hash;
     private GetHash getHash;
     private String previousHash;
     private int nonce;
     private String data;
+    private int flag = 0;
 
-    public Block(String data, String previousHash) {
+    public Block(String data, String previousHash, int nClient) {
         /* try {
             this.sha256 = MessageDigest.getInstance("SHA-256");
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         } */
         this.previousHash = previousHash;
-        this.nonce = 0;
+        this.nonce = nClient;
         this.data = data;
+        this.nClient = nClient;
+        //this.jump = 2;
     }
 
-    
+    public Block(String data, int nonce, String previousHash, String hash){
+        this.previousHash = previousHash;
+        this.nonce = nonce;
+        this.data = data;
+        this.hash = hash;
+        //this.jump = 2;
+    }
 
     public void mine(int difficulty) throws NoSuchAlgorithmException {
         getHash = new GetHash(toString());
         //hexString = "a123";
         while (new java.math.BigInteger(getHash.hexDigest(), 16).compareTo(new java.math.BigInteger("2").pow(256 - difficulty)) > 0) {
-            nonce++;
+            if (flag == 1) break;
+            nonce = nonce + jump;
             getHash = new GetHash(toString());
         }
+        hash = getHash.hexDigest();
     }
 
     /* private void updateHash() {
@@ -46,7 +60,10 @@ public class Block {
         return previousHash + data + nonce;
     }
 
-    public static void main(String[] args) throws NoSuchAlgorithmException {
+    public String toFormat(){
+        return previousHash + " " + nClient + data + " " + nonce + " " + hash;
+    }
+    /* public static void main(String[] args) throws NoSuchAlgorithmException {
         // Example usage:
         String previousHash = "previous_hash_value"; // Replace with actual value
         String data = "block_data";
@@ -56,7 +73,7 @@ public class Block {
         block.mine(difficulty);
 
         System.out.println("Mined Block: " + block.toString());
-    }
+    } */
 
 
 
@@ -77,7 +94,11 @@ public class Block {
     }
 
 
-    public String getHash() throws NoSuchAlgorithmException{
-        return getHash.hexDigest();
+    public String getHash(){
+        return hash;
+    }
+
+    public void setFlag(int flag){
+        this.flag = flag;
     }
 }

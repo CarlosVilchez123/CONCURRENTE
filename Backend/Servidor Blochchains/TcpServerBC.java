@@ -1,6 +1,7 @@
 import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.security.NoSuchAlgorithmException;
 
 public class TcpServerBC {
     private String serverMessagej;
@@ -18,7 +19,10 @@ public class TcpServerBC {
     }
 
     public void enviarMensaje(String message) {
-
+        if (out != null && !out.checkError()){
+            out.println(message);
+            out.flush();
+        }
     }
 
     public void run() {
@@ -53,6 +57,6 @@ public class TcpServerBC {
     }
 
     public interface OnMessageReceived {
-        public void messageReceived(String message);
+        public void messageReceived(String message) throws NoSuchAlgorithmException;
     }
 }

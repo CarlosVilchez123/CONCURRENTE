@@ -2,6 +2,7 @@ import java.io.BufferedReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.security.NoSuchAlgorithmException;
 
 public class TcpServer {
 
@@ -25,10 +26,10 @@ public class TcpServer {
 
     public void enviarMensajeTcp(String mensaje) {
         for (int i = 1; i <= numNodos; i++) {
-            sendClient[i].enviarMensaje(mensaje);
-            if (i == 1) {
+            sendClient[i].enviarMensaje(mensaje + " " + i);
+            /* if (i == 1) {
                 sendClient[i].enviarMensaje("TU ERES EL NODO MAESTRO");
-            }
+            } */
         }
     }
 
@@ -67,6 +68,6 @@ public class TcpServer {
 
     // Interfaz hecha para poder recibir mensajes
     public interface OnMessageReceived {
-        public void messageReceived(String message);
+        public void messageReceived(String message) throws NoSuchAlgorithmException;
     }
 }

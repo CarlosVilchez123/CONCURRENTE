@@ -9,6 +9,7 @@ public class Chain {
     private int difficulty;
     private List<Block> blocks;
     private List<String> pool;
+    private Block origin;
 
 
     public Chain(int difficulty) throws NoSuchAlgorithmException {
@@ -21,7 +22,7 @@ public class Chain {
     private void createOriginBlock() throws NoSuchAlgorithmException{
         GetHash getHash = new GetHash(" ");
         String emptyStringHash = getHash.hexDigest();
-        Block origin = new Block("Origin", emptyStringHash);
+        origin = new Block("Origin", emptyStringHash, 2);
         origin.mine(difficulty);
         blocks.add(origin);
     }
@@ -32,7 +33,9 @@ public class Chain {
         GetHash getHash = new GetHash(input);
         String calculatedHash = getHash.hexDigest();
 
-        return blockHash.equals(calculatedHash) && new java.math.BigInteger(getHash.hexDigest(), 16).compareTo(new java.math.BigInteger("2").pow(256 - difficulty)) > 0 && block.getPreviousHash().equals(blocks.get(blocks.size() - 1).getHash());
+        boolean flag = blockHash.equals(calculatedHash) && new java.math.BigInteger(getHash.hexDigest(), 16).compareTo(new java.math.BigInteger("2").pow(256 - difficulty)) <= 0 && block.getPreviousHash().equals(blocks.get(blocks.size() - 1).getHash());
+        //System.out.println(flag);
+        return flag;
     }
 
     public void addToChain(Block block) throws NoSuchAlgorithmException{
@@ -45,7 +48,7 @@ public class Chain {
         pool.add(data);
     }
 
-    public void mine() throws NoSuchAlgorithmException {
+    /* public void mine() throws NoSuchAlgorithmException {
         if (!pool.isEmpty()) {
             String data = pool.remove(0);
             Block block = new Block(data, blocks.get(blocks.size() - 1).getHash());
@@ -59,5 +62,17 @@ public class Chain {
             System.out.println("Data\t\t" + block.getData());
             System.out.println("\n\n==============================");
         }
+    } */
+
+    public String popPool(){
+        return pool.remove(0);
+    }
+
+    public String originHash(){
+        return origin.getHash();
+    }
+
+    public List<Block> getBlocks(){
+        return blocks;
     }
 }

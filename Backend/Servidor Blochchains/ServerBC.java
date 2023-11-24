@@ -1,10 +1,18 @@
+import java.security.NoSuchAlgorithmException;
 import java.util.Scanner;
+import Blockchain.*;
 
 public class ServerBC {
     TcpServerBC mTcpClient;
     Scanner sc;
+    Block block;
+    static int difficulty = 10;
 
-    void init() {
+    void init() throws NoSuchAlgorithmException {
+
+        //chain = new Chain(10);
+
+
 
         new Thread(
                 new Runnable() {
@@ -13,7 +21,7 @@ public class ServerBC {
                         mTcpClient = new TcpServerBC("192.168.18.175",
                                 new TcpServerBC.OnMessageReceived() {
                                     @Override
-                                    public void messageReceived(String message) {
+                                    public void messageReceived(String message) throws NoSuchAlgorithmException {
                                         mensajeRecibido(message);
                                     }
                                 });
@@ -28,13 +36,21 @@ public class ServerBC {
         }
     }
 
-    void mensajeRecibido(String message) {
+    void mensajeRecibido(String message) throws NoSuchAlgorithmException {
 
-        if (message.equals("distribuye-1")) {
+        /* if (message.equals("nodos")) {
+            System.out.println(message);
+        } */
+        String[] arrOfStr = message.split(" ", 4);
+        block = new Block(arrOfStr[0], arrOfStr[1], Integer.parseInt(arrOfStr[2]));
+        //block.setFlag(Integer.parseInt(arrOfStr[2]));
+        block.mine(difficulty);
+        System.out.println(block.toFormat());
 
-        }
+        ClienteEnvia(block.toFormat());
     }
 
     void ClienteEnvia(String message) {
+        mTcpClient.enviarMensaje(message);
     }
 }

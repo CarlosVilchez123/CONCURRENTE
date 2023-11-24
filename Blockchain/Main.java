@@ -12,7 +12,7 @@ public class Main {
         for (int i = 0; i < 5; i++){
             String data = Integer.toString(i);
             chain.addToPool(data);
-            chain.mine();
+            //chain.mine();
         }
         /* try {
             // Example usage:
