@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mostrar Datos</title>
+</head>
+<body>
+    <h1>Base de Datos</h1>
+    <table id="datosTable">
+        <tr>
+            <th>ID_PROD</th>
+            <th>NAME_PROD</th>
+            <th>DETAIL</th>
+            <th>UNIT</th>
+            <th>AMOUNT</th>
+            <th>COST</th>
+        </tr>
+    </table>
+
+    <script>
+        // JavaScript para leer y mostrar datos del archivo
+        document.addEventListener('DOMContentLoaded', function () {
+            // Ruta del archivo de texto
+            var archivoTexto = './DB_almacen.txt';
+
+            // Realizar la solicitud para leer el archivo
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    // Parsear el contenido del archivo CSV
+                    var datos = parsearCSV(this.responseText);
+
+                    // Mostrar los datos en la tabla
+                    mostrarDatosEnTabla(datos);
+                }
+            };
+            xhttp.open('GET', archivoTexto, true);
+            xhttp.send();
+
+            // Función para parsear el contenido CSV
+            function parsearCSV(csv) {
+                var lineas = csv.split('\n');
+                var datos = [];
+                for (var i = 0; i < lineas.length; i++) {
+                    var elementos = lineas[i].split(',');
+                    var fila = [];
+                    for (var j = 0; j < elementos.length; j++) {
+                        fila.push(elementos[j]);
+                    }
+                    datos.push(fila);
+                }
+                return datos;
+            }
+
+            // Función para mostrar datos en la tabla
+            function mostrarDatosEnTabla(datos) {
+                var tabla = document.getElementById('datosTable');
+                for (var i = 1; i < datos.length; i++) {
+                    var fila = tabla.insertRow(-1);
+                    for (var j = 0; j < datos[i].length; j++) {
+                        var celda = fila.insertCell(j);
+                        celda.innerHTML = datos[i][j];
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
