@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRUD App</title>
+</head>
+<body>
+    <h1>CRUD ALMACEN</h1>
+    
+    <form action="/add" method="post">
+        <label for="id_producto">ID Producto:</label>
+        <input type="text" name="id_producto" required>
+        
+        <label for="nombre_producto">Nombre Producto:</label>
+        <input type="text" name="nombre_producto" required>
+        
+        <label for="descripcion">Descripción:</label>
+        <input type="text" name="descripcion" required>
+        
+        <label for="unidad">Unidad:</label>
+        <input type="text" name="unidad" required>
+        
+        <label for="cantidad">Cantidad:</label>
+        <input type="text" name="cantidad" required>
+        
+        <label for="precio">Precio:</label>
+        <input type="text" name="precio" required>
+        
+        <button type="submit">Agregar</button>
+    </form>
+    <ul>
+        {% for record in data %}
+            <li>
+                {{ record[1] }} - {{ record[2] }} - {{ record[3] }} - {{ record[4] }} - {{ record[5] }}
+                <a href="/delete/{{ loop.index0 }}">Eliminar</a>
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
