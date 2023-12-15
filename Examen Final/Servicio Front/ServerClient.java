@@ -8,7 +8,7 @@ import java.net.URL;
 public class ServerClient {
 
     public String realizarVenta(int puerto, String parametros) throws IOException {
-        URL url = new URL("http://192.168.100.25:" + puerto + "/realizar_venta");
+        URL url = new URL("http://10.1.18.202:" + puerto + "/realizar_venta");
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
         try {
@@ -20,7 +20,7 @@ public class ServerClient {
                 os.write(input, 0, input.length);
             }
 
-            // Lee la respuesta del servidor
+            System.out.println("se esta recibiendo la data");
             try (BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream(), "utf-8"))) {
                 StringBuilder response = new StringBuilder();
                 String responseLine;
@@ -35,13 +35,12 @@ public class ServerClient {
     }
 
     public String consultarExistencias(int puerto, int idProducto) throws IOException {
-        URL url = new URL("http://192.168.100.25:" + puerto + "/consulta_existencia/" + idProducto);
+        URL url = new URL("http://10.1.18.202:" + puerto + "/consulta_existencia/" + idProducto);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
         try {
             connection.setRequestMethod("GET");
 
-            // Lee la respuesta del servidor
             try (BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream(), "utf-8"))) {
                 StringBuilder response = new StringBuilder();
                 String responseLine;

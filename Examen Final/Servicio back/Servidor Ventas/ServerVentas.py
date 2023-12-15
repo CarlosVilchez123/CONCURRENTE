@@ -5,6 +5,22 @@ app = Flask(__name__)
 database_file = 'DB_ventas.txt'
 database_detalles = 'DB_Detalles.txt'
 
+def sync_data_with_replicas(data):
+    replicas_ips = ['192.168.1.101', '192.168.1.102']
+
+    for ip in replicas_ips:
+        url = f'http://{ip}:8888/sync_data'
+        payload = {'data': data}
+
+        try:
+            response = request.post(url, data=payload)
+            if response.json()['success']:
+                print(f'Data synchronized with replica at {ip}')
+            else:
+                print(f'Error syncing data with replica at {ip}: {response.json()["error"]}')
+        except Exception as e:
+            print(f'Error connecting to replica at {ip}: {str(e)}')
+
 def read_data(database):
     try:
         with open(database, 'r') as file:
@@ -58,6 +74,22 @@ def detalles():
     if request.method == 'POST':
         data = read_data(database_detalles)
         return render_template('detalles.html', data = data)
+    
+@app.route('/realizar_venta', methods=['POST'])
+def realizar_ventas():
+    print("entro a la funcion")
+    return "hola mundo"
+
+@app.route('/sync_data', methods=['POST'])
+def sync_data():
+    try:
+        if request.method == 'POST':
+            print("accedi a esto")
+
+        return "hola mundo"
+    except Exception as e:
+        return "hola mundo"
+
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0',port=8888)
+    app.run(host='0.0.0.0',port=8000)

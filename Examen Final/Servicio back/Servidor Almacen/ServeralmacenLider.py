@@ -4,7 +4,22 @@ import threading
 app = Flask(__name__)
 
 database_file = 'BD1.txt'
-lock = threading.Lock()
+
+def sync_data_with_replicas(data):
+    replicas_ips = ['192.168.1.101', '192.168.1.102']
+
+    for ip in replicas_ips:
+        url = f'http://{ip}:8888/sync_data'
+        payload = {'data': data}
+
+        try:
+            response = request.post(url, data=payload)
+            if response.json()['success']:
+                print(f'Data synchronized with replica at {ip}')
+            else:
+                print(f'Error syncing data with replica at {ip}: {response.json()["error"]}')
+        except Exception as e:
+            print(f'Error connecting to replica at {ip}: {str(e)}')
 
 def read_data():
     try:
@@ -50,14 +65,13 @@ def add():
             cantidad = request.form['cantidad']
             precio = request.form['precio']
 
-            # Imprimir el contenido de la solicitud POST
-            print(f"Nuevo producto: {id_producto}, {nombre_producto}, {unidad}, {descripcion}, {cantidad}, {precio}")
 
             update_data(id_producto + ',' + nombre_producto + ',' + descripcion + ',' + unidad + ',' + cantidad + ',' + precio)
         return redirect('/')
     except Exception as e:
         print(f"Error en la ruta /add: {str(e)}")
         return "Error interno en el servidor", 500
+    
 @app.route('/consulta_existencia/<int:id_producto>')
 def consultar_existencia(id_producto):
     data=read_data()
@@ -67,5 +81,16 @@ def consultar_existencia(id_producto):
             return ({"id_producto": id_producto, "existencias": int(product[4])})
     
     return ({"id_producto": id_producto, "existencias": 0})
+
+@app.route('/sync_data', methods=['POST'])
+def sync_data():
+    try:
+        if request.method == 'POST':
+            print("accedi a esto")
+
+        return redirect('/')
+    except Exception as e:
+        return redirect('/')
+    
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8888)
