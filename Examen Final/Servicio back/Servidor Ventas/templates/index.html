@@ -3,36 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CRUD App</title>
+    <title>VENTAS app</title>
 </head>
 <body>
-    <h1>CRUD ALMACEN</h1>
+    <h1>CRUD VENTAS</h1>
     
     <form action="/add" method="post">
-        <label for="id_producto">ID Producto:</label>
-        <input type="text" name="id_producto" required>
+        <label for="id_venta">ID VENTA:</label>
+        <input type="text" name="id_venta" required>
         
-        <label for="nombre_producto">Nombre Producto:</label>
-        <input type="text" name="nombre_producto" required>
+        <label for="RUC">RUC:</label>
+        <input type="text" name="RUC" required>
         
-        <label for="descripcion">Descripción:</label>
-        <input type="text" name="descripcion" required>
+        <label for="Nombre">NOMBRE:</label>
+        <input type="text" name="nombre" required>
         
-        <label for="unidad">Unidad:</label>
-        <input type="text" name="unidad" required>
-        
-        <label for="cantidad">Cantidad:</label>
-        <input type="text" name="cantidad" required>
-        
-        <label for="precio">Precio:</label>
-        <input type="text" name="precio" required>
+        <label for="Costo">COSTO:</label>
+        <input type="text" name="costo" required>
         
         <button type="submit">Agregar</button>
     </form>
+    <button type="submit">Ver detalles</button>
     <ul>
         {% for record in data %}
             <li>
-                {{ record[1] }} - {{ record[2] }} - {{ record[3] }} - {{ record[4] }} - {{ record[5] }}
+                {{ record[1] }} - {{ record[2] }} - {{ record[3] }} - {{ record[4] }}
                 <a href="/delete/{{ loop.index0 }}">Eliminar</a>
             </li>
         {% endfor %}

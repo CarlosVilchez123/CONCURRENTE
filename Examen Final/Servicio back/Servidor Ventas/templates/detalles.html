@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRUD ALMACEN</title>
+</head>
+<body>
+    <h1>Detalles</h1>
+
+    <ul>
+        {% for record in data %}
+            <li>
+                {{ record[0] }} - {{ record[1] }} - {{ record[2] }} - {{ record[3] }} - {{ record[4] }} - {{ record[5] }} - {{ record[6] }}
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
